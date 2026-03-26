@@ -5,6 +5,26 @@ import { cn } from "@/lib/utils";
 import { User, Bot, Loader2 } from "lucide-react";
 import { MarkdownRenderer } from "./MarkdownRenderer";
 
+function getToolLabel(toolName: string, args?: Record<string, any>): string {
+  const fileName = args?.path ? args.path.split("/").pop() : null;
+
+  if (toolName === "str_replace_editor") {
+    if (args?.command === "create") return fileName ? `Creating ${fileName}` : "Creating file";
+    if (args?.command === "str_replace") return fileName ? `Editing ${fileName}` : "Editing file";
+    if (args?.command === "insert") return fileName ? `Updating ${fileName}` : "Updating file";
+    if (args?.command === "view") return fileName ? `Reading ${fileName}` : "Reading file";
+    return fileName ? `Writing ${fileName}` : "Writing file";
+  }
+
+  if (toolName === "file_manager") {
+    if (args?.command === "rename") return "Renaming file";
+    if (args?.command === "delete") return fileName ? `Deleting ${fileName}` : "Deleting file";
+    return "Managing files";
+  }
+
+  return toolName;
+}
+
 interface MessageListProps {
   messages: Message[];
   isLoading?: boolean;
@@ -81,12 +101,12 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
                                 {tool.state === "result" && tool.result ? (
                                   <>
                                     <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                                    <span className="text-neutral-700">{tool.toolName}</span>
+                                    <span className="text-neutral-700">{getToolLabel(tool.toolName, tool.args)}</span>
                                   </>
                                 ) : (
                                   <>
                                     <Loader2 className="w-3 h-3 animate-spin text-blue-600" />
-                                    <span className="text-neutral-700">{tool.toolName}</span>
+                                    <span className="text-neutral-700">{getToolLabel(tool.toolName, tool.args)}</span>
                                   </>
                                 )}
                               </div>
