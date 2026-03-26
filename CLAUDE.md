@@ -67,6 +67,14 @@ Middleware (`src/middleware.ts`) verifies JWT from cookie on all protected route
 
 `src/lib/prompts/generation.tsx` contains the system prompt that instructs Claude how to generate React components and use the file tools.
 
+## Instructions Storage
+
+Store all Claude instructions and preferences in this `CLAUDE.md` file, not in the auto-memory system.
+
+## Coding Style
+
+- Only comment complex or non-obvious code. Skip comments on self-evident logic.
+
 ## Environment
 
 ```
